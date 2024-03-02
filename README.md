@@ -8,7 +8,6 @@
 
 
 ## FEATURES
-- Basic security features
 - Easy Configuration
 - Friendly Code
 
