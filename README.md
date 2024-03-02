@@ -8,8 +8,10 @@
 
 
 ## FEATURES
+- basic security (soon)
 - Easy Configuration
 - Friendly Code
+
 
 ## SHOWCASE 🎬
 https://youtu.be/ILQkkuWpbCQ
