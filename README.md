@@ -8,7 +8,7 @@
 
 
 ## FEATURES
-- basic security (soon)
+- Basic security (soon)
 - Easy Configuration
 - Friendly Code
 
