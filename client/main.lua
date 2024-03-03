@@ -428,7 +428,7 @@ function Delivering()
                                 end)
                             })
                             if not cancled then
-                                TriggerServerEvent('lnd-courier:sellpackage',Config.AmountSell, totality)
+                                TriggerServerEvent('lnd-courier:sellpackage',Config.AmountSell, receivedToken)
                             end
                     end
                     takespackage = false
