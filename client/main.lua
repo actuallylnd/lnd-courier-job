@@ -404,18 +404,18 @@ function Delivering()
                         Delivering()
                         NumberOfDeliveries()
                             lib.progressCircle({
-                                duration = 5000,
+                                duration = 4000,
                                 position = 'middle',
                                 useWhileDead = false,
                                 canCancel = false,
                                 disable = {
                                     move = true,
                                 },
-                                anim = {
-                                    dict = 'mp_common',
-                                    clip = 'givetake1_a'
+                                 anim = {
+                                    dict = 'anim@heists@box_carry@',
+                                    clip = 'idle'
                                 },
-                                --[[prop = {
+                               --[[prop = {
                                     model = getRandomPackageProp(),
                                     pos = vec3(0.2, 0, -0.02),
                                     rot = vec3(0.0, 0.0, -1.5),
@@ -423,7 +423,7 @@ function Delivering()
                                 },--]]
                                 havebox = false,
                                 ClearPedTasksImmediately(PlayerPedId()),
-                                Citizen.SetTimeout(5000, function ()
+                                Citizen.SetTimeout(4050, function ()
                                     deleteprop()
                                 end)
                             })
@@ -462,9 +462,10 @@ function spawnPed()
     if spawnedPed ~= 0 then
         TaskTurnPedToFaceEntity(spawnedPed, playerPed, -1)
         SetEntityAsMissionEntity(spawnedPed, true, true)
+        lib.requestAnimDict('mp_common')
+        TaskPlayAnim(spawnedPed, "mp_common",'givetake1_a' , 5.0, 5.0, 15000, 50, 4, false, false, false)
     else
     end
-
     function deletePed()
         local countdownStartTime = GetGameTimer()
         local countdownDuration = 8000
