@@ -176,6 +176,7 @@ function SpawnVeh()
                 icon = 'fa-solid fa-cube',
                 label = 'Take package',
                 onSelect = function ()
+
                     if not takespackage then
                         takespackage = true
                         SetVehicleDoorOpen(vehicle, 2, false, false)
@@ -191,10 +192,25 @@ function SpawnVeh()
                             },
                             anim = {
                                 dict = 'missexile3',
-                                clip = 'ex03_dingy_search_case_base_michael'
+                                clip = 'ex03_dingy_search_case_base_michael',
                             },
-                        })
 
+                            Citizen.SetTimeout(6000, function()
+                                --0.05, 0.1, -0.3, 300.0, 250.0, 20.0
+                                entity = CreateObject(getRandomPackageProp(), GetEntityCoords(PlayerPedId()), true, false, false)
+                                AttachEntityToEntity(entity, PlayerPedId(), GetPedBoneIndex(PlayerPedId(), 57005), 0.05, 0.1, -0.3, 300.0, 250.0, 20.0, true, true, false, true, 1, true)
+
+                                 lib.requestAnimDict('anim@heists@box_carry@')
+                                 TaskPlayAnim(PlayerPedId(), 'anim@heists@box_carry@', "idle", 8.0, 8.0, -1, 50, 0, false, false, false)
+                                function deleteprop()
+                                        if DoesEntityExist(entity) then
+                                            DetachEntity(entity, true, true)
+                                            DeleteEntity(entity)
+                                        end
+                                    end
+                            end),
+
+                        })
                         Citizen.SetTimeout(2000, function()
                             SetVehicleDoorShut(vehicle, 2, false)
                             SetVehicleDoorShut(vehicle, 3, false)
@@ -300,6 +316,11 @@ function Delivering()
     
     local deliveriesBlips = {}
 
+    function getRandomPackageProp()
+        local randomIndexProp =  math.random(1, #Config.RandomPackageProp)
+        return Config.RandomPackageProp[randomIndexProp]
+    end
+
     for i = 1, 1 do -- Change if u want more blips in  one time [[ parameter two ]] .
         
         if not isCourier then
@@ -392,18 +413,23 @@ function Delivering()
                                 },
                                 anim = {
                                     dict = 'mp_common',
-                                    clip = 'givetake1_b'
+                                    clip = 'givetake1_a'
                                 },
-                                prop = {
-                                    model = `prop_drug_package_02`,
+                                --[[prop = {
+                                    model = getRandomPackageProp(),
                                     pos = vec3(0.2, 0, -0.02),
                                     rot = vec3(0.0, 0.0, -1.5),
                                     bone = 28422
-                                },
-                            })  
-                        if not cancled then
-                            TriggerServerEvent('lnd-courier:sellpackage')
-                        end
+                                },--]]
+                                havebox = false,
+                                ClearPedTasksImmediately(PlayerPedId()),
+                                Citizen.SetTimeout(5000, function ()
+                                    deleteprop()
+                                end)
+                            })
+                            if not cancled then
+                                TriggerServerEvent('lnd-courier:sellpackage',Config.AmountSell, totality)
+                            end
                     end
                     takespackage = false
                 end
@@ -468,6 +494,7 @@ function CourierEndJob()
     hasSpawnedVehicle = false
     takespackage = false
     deliveryZoneId = deliveryZoneId
+    deliveryCount = 0
     
     for _, blip in ipairs(deliveriesBlips) do
         RemoveBlip(blip)
