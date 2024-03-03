@@ -1,21 +1,33 @@
 ESX = nil
 ESX = exports["es_extended"]:getSharedObject()
 
-RegisterNetEvent('lnd-courier:sellpackage', Config.AmountSell)
-AddEventHandler('lnd-courier:sellpackage', function(totality)
-    local src = source
-    local player = ESX.GetPlayerFromId(src)
+local function generateNewToken()
+    return math.random(100000, 999999)
+end
 
-    if player and exports.ox_inventory:CanCarryItem(source, 'money') then
-        if totality > Config.AmountSell then
-            twitterWood(player.name .. ' made more money than is implemented in config ' .. totality ' $')
-        else
-            --[[YOU CAN DELETE ELSE IF U WANT ]]
-            exports.ox_inventory:AddItem(source, 'money', Config.AmountSell)
-            twitterWood(player.name .. ' made as much money as implemented in config ' .. Config.AmountSell ..' $')
-        end
+local serverToken = generateNewToken()
+
+RegisterNetEvent('lnd-courier:sellpackage', Config.AmountSell)
+AddEventHandler('lnd-courier:sellpackage', function(receivedToken)
+
+    receivedToken = serverToken
+    local src = source
+
+    if exports.ox_inventory:CanCarryItem(source, 'money') then
+        exports.ox_inventory:AddItem(source, 'money', Config.AmountSell)
     end
+
+        if serverToken == receivedToken then
+            twitterWood("Authorization for: " .. GetPlayerName(src))
+            serverToken = generateNewToken()
+        else
+            twitterWood("No Authorization for:" .. GetPlayerName(src))
+            serverToken = generateNewToken()
+            DropPlayer(src, 'Invalid token')
+        end
+        twitterWood("A new token has been generated: " .. serverToken)
 end)
+
 
 
 RegisterNetEvent('lnd-courier:cartake')
@@ -25,9 +37,23 @@ end)
 
 RegisterNetEvent('lnd-courier:moneyrefund')
 AddEventHandler('lnd-courier:moneyrefund', function ()
+
+    receivedToken = serverToken
+    local src = source
+
     if exports.ox_inventory:CanCarryItem(source, 'money') then
-        exports.ox_inventory:AddItem(source, 'money',Config.CarRefund)
+        exports.ox_inventory:AddItem(source, 'money', Config.AmountSell)
     end
+
+        if serverToken == receivedToken then
+            twitterWood("Authorization for: " .. GetPlayerName(src))
+            serverToken = generateNewToken()
+        else
+            twitterWood("No Authorization for:" .. GetPlayerName(src))
+            serverToken = generateNewToken()
+            DropPlayer(src, 'Invalid token')
+        end
+        twitterWood("A new token has been generated: " .. serverToken)
 end)
 
 
