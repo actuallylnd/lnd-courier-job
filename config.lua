@@ -3,12 +3,21 @@ Config = {
 
     HQBlip = vec3(-438.290100, -2795.617676, 7.290894), --[[ Main blip coords]]
 
+    
+
     deliveries = {      --[[You can add here more deliveries locations]]
     vec3(1388.980225, -569.459351, 74.487915),
     vec3(1386.237305, -593.564819, 74.471069),
     vec3(1367.116455, -606.593384, 74.706909),
-    vec3(1341.217529, -597.547241, 74.690063) },
+    vec3(1341.217529, -597.547241, 74.690063),
+    vec3(-766.734070, -23.815382, 41.074707) },
 
+    RandomPackageProp = {  --[[Here you can add more package props]]
+        `prop_cs_cardbox_01`,
+        `prop_paper_box_02 `,
+        `prop_paper_box_03`,
+        `prop_paper_box_04`,
+    },
 
     notifys = {  --[[ translation  u can implement your language]]
         clothes = 'You have dressed your work clothes',
