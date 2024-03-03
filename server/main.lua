@@ -7,8 +7,8 @@ AddEventHandler('lnd-courier:sellpackage', function(totality)
     local player = ESX.GetPlayerFromId(src)
 
     if player and exports.ox_inventory:CanCarryItem(source, 'money') then
-        if totality < Config.AmountSell then
-            twitterWood(player.name .. ' made less money than is implemented in config ' .. totality ' $')
+        if totality > Config.AmountSell then
+            twitterWood(player.name .. ' made more money than is implemented in config ' .. totality ' $')
         else
             --[[YOU CAN DELETE ELSE IF U WANT ]]
             exports.ox_inventory:AddItem(source, 'money', Config.AmountSell)
