@@ -422,9 +422,9 @@ function Delivering()
                                     bone = 28422
                                 },--]]
                                 havebox = false,
-                                ClearPedTasksImmediately(PlayerPedId()),
-                                Citizen.SetTimeout(4050, function ()
+                                Citizen.SetTimeout(3999, function ()
                                     deleteprop()
+                                    ClearPedTasksImmediately(PlayerPedId())
                                 end)
                             })
                             if not cancled then
@@ -464,8 +464,23 @@ function spawnPed()
         SetEntityAsMissionEntity(spawnedPed, true, true)
         lib.requestAnimDict('mp_common')
         TaskPlayAnim(spawnedPed, "mp_common",'givetake1_a' , 5.0, 5.0, 15000, 50, 4, false, false, false)
+
+        Citizen.SetTimeout(2000, function ()
+            entity2 = CreateObject(getRandomPackageProp(), GetEntityCoords(spawnedPed), true, false, false)
+            AttachEntityToEntity(entity2, spawnedPed, GetPedBoneIndex(spawnedPed, 57005), 0.05, 0.1, -0.3, 300.0, 250.0, 20.0, true, true, false, true, 1, true)
+            lib.requestAnimDict('anim@heists@box_carry@')
+            TaskPlayAnim(spawnedPed, "anim@heists@box_carry@",'idle' , 5.0, 5.0, 15000, 50, 4, false, false, false)
+
+            Citizen.SetTimeout(3150, function ()
+                    if DoesEntityExist(entity2) then
+                        DetachEntity(entity2, true, true)
+                        DeleteEntity(entity2)
+                    end
+            end)
+        end)
     else
     end
+
     function deletePed()
         local countdownStartTime = GetGameTimer()
         local countdownDuration = 8000
